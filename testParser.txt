@@ -1,0 +1,4 @@
+entero atributosCAUSACHAMAADIOS, suma1//=3, b[4]={7, 8, 9, 1} 
+real x, y=3
+a = 56
+x = 4.23

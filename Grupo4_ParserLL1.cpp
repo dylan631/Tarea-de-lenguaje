@@ -20,13 +20,14 @@ void L(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
 void M(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
 void N(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
 void O(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
+void P(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
 void mostrarTokens(char token[10], char tipo);
 
 char palabraReservada[4][15] = { // Palabra reservadas (tipo)
-	"entero", "real","lee","escribe"};
+	"entero", "real", "lee", "escribe"};
 
-char operadorSimple[13][5] = { // Operadores simples
-	"+", "-", "*", "/", ",", "[", "]", "{", "}", "=",">","<"}; //TAREA TWO: Comentario (// /* */)
+char operadorSimple[13][5] = {									 // Operadores simples
+	"+", "-", "*", "/", ",", "[", "]", "{", "}", "=", ">", "<"}; // TAREA TWO: Comentario (// /* */)
 
 int esLetra(char ch) // Identifica si una letra
 {
@@ -75,7 +76,7 @@ int esPalabraReservada(char token[]) // Identifica si es una palabra reservada
 void limpiaChar(char token[]) // limpia token
 {
 	int i = 0;
-	for (i = 0; i < 10; i++) // I - In - Int  
+	for (i = 0; i < 10; i++) // I - In - Int
 	{
 		token[i] = '\0'; // espacio
 	}
@@ -84,13 +85,15 @@ void limpiaChar(char token[]) // limpia token
 void Scanner(int &syn, int &pos, char token[], char linFuente[], char &tipo)
 {
 	char ch;
-	int ptoken = 0,i = 0;
+	int ptoken = 0, i = 0;
 	tipo = ' ';
 	syn = 0;
 
-	do{
-		ch = linFuente[pos];
-	}while (ch == ' ');
+	ch = linFuente[pos];
+	while (ch == ' ')
+	{
+		ch = linFuente[++pos];
+	}
 
 	limpiaChar(token); // limpia el espacio en blanco
 
@@ -159,7 +162,7 @@ int main()
 	cout << "\n\t*                      PARSER LL1                          *";
 	cout << "\n\t************************************************************" << endl;
 	cout << "\tCodigo del archivo texto:\n";
-	//fgets(linFuente, sizeof(linFuente), fp); // Leer una linea del archivo
+	// fgets(linFuente, sizeof(linFuente), fp); // Leer una linea del archivo
 
 	while (!feof(fp))
 	{
@@ -184,20 +187,41 @@ int main()
 			cout << "\n\tlinea correcta\n"
 				 << endl;
 		}
-		//fgets(linFuente, sizeof(linFuente), fp); // Vuelve a leer la linea del archivo texto
+		// fgets(linFuente, sizeof(linFuente), fp); // Vuelve a leer la linea del archivo texto
 	}
 	return 0;
 }
 
 void S(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 {
-	T(syn, pos, token, lin, tipo, e); // si empieza con palabra reservada: entero, real, lee o escribe
-	if (e != 0)
-		A(syn, pos, token, lin, tipo, e); // si empieza con un identificador
+	if (strcmp(token, "/") == 0) //
+	{
+		Scanner(syn, pos, token, lin, tipo);
+		P(syn, pos, token, lin, tipo, e);
+	}
+	else
+	{
+		T(syn, pos, token, lin, tipo, e); // si empieza con palabra reservada: entero, real, lee o escribe
+		if (e != 0)
+			A(syn, pos, token, lin, tipo, e); // si empieza con un identificador
+	}
+}
+
+void P(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
+{
+	if (strcmp(token, "/") == 0)
+	{
+		e=0;
+	}
+	else if(strcmp(token, "*") == 0)
+	{
+		Scanner(syn, pos, token, lin, tipo);
+		T(syn, pos, token, lin, tipo, e);
+	}
 }
 void T(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 {
-	if (tipo == 'R') //TAREA ONE
+	if (tipo == 'R') // TAREA ONE
 	{
 		e = 0;
 		Scanner(syn, pos, token, lin, tipo);
@@ -228,6 +252,11 @@ void B(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 		Scanner(syn, pos, token, lin, tipo);
 		A(syn, pos, token, lin, tipo, e);
 	}
+	else if (strcmp(token, "/") == 0) //
+	{
+		Scanner(syn, pos, token, lin, tipo);
+		P(syn, pos, token, lin, tipo, e);
+	}
 	else if (strcmp(token, "[") == 0)
 	{
 		Scanner(syn, pos, token, lin, tipo);
@@ -238,9 +267,9 @@ void B(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 		Scanner(syn, pos, token, lin, tipo);
 		M(syn, pos, token, lin, tipo, e);
 	}
-	else if (strcmp(token, "") == 0) //ENTERO Anadir  ,agarrar.    
+	else if (strcmp(token, "") == 0) // ENTERO Anadir  ,agarrar.
 	{
-		e=0;
+		e = 0;
 	}
 	else
 	{
@@ -279,6 +308,11 @@ void E(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 	{
 		Scanner(syn, pos, token, lin, tipo);
 		F(syn, pos, token, lin, tipo, e);
+	}
+	else if (strcmp(token, "/") == 0) //
+	{
+		Scanner(syn, pos, token, lin, tipo);
+		P(syn, pos, token, lin, tipo, e);
 	}
 	else if (strcmp(token, ",") == 0)
 	{
@@ -333,10 +367,14 @@ void H(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 }
 void I(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 {
-	if (strcmp(token, ";") == 0)
+	if (strcmp(token, "") == 0)
+	{
+		e = 0;
+	}
+	else if (strcmp(token, "/") == 0) //
 	{
 		Scanner(syn, pos, token, lin, tipo);
-		O(syn, pos, token, lin, tipo, e);
+		P(syn, pos, token, lin, tipo, e);
 	}
 	else if (strcmp(token, ",") == 0)
 	{
@@ -374,10 +412,9 @@ void K(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 }
 void L(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 {
-	if (strcmp(token, ";") == 0)
+	if (strcmp(token, "") == 0)
 	{
-		Scanner(syn, pos, token, lin, tipo);
-		O(syn, pos, token, lin, tipo, e);
+		e = 0;
 	}
 	else
 	{
@@ -398,12 +435,16 @@ void M(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 }
 void N(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 {
-	if (strcmp(token, ";") == 0)
+	if (strcmp(token, "") == 0)
+	{
+		e = 0;
+	}
+	else if (strcmp(token, "/") == 0) //
 	{
 		Scanner(syn, pos, token, lin, tipo);
-		O(syn, pos, token, lin, tipo, e);
+		P(syn, pos, token, lin, tipo, e);
 	}
-	else if (strcmp(token, ",") == 0) //OTRO OPERARDOR (FALTA AGREGAR)
+	else if (strcmp(token, ",") == 0) // OTRO OPERARDOR (FALTA AGREGAR)
 	{
 		Scanner(syn, pos, token, lin, tipo);
 		A(syn, pos, token, lin, tipo, e);
@@ -415,7 +456,8 @@ void N(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 }
 void O(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 {
-	if (strcmp(token,"") == 0){
+	if (strcmp(token, "") == 0)
+	{
 		e = 0;
 	}
 	else
