@@ -1,4 +1,15 @@
-entero atributosCAUSACHAMAADIOS, suma1//=3, b[4]={7, 8, 9, 1} 
-real x, y=3
-a = 56
+entero a, suma1=3, b[4]={7, 8, 9, 1}
+real x, y=3;
+entero a=3,m=a
+lee>>a+b
+escribe<<m<<n
+lee>>x+3>>y
+suma=a
+a = 7
 x = 4.23
+a=b
+c=a,m=a
+suma=a+b+3
+suma = a,3
+suma=4+34+suma
+suma=a+b;
