@@ -16,17 +16,17 @@ void F(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
 void G(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
 void H(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
 void I(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
-//void J(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
-//void K(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
-//void L(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
+// void J(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
+// void K(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
+// void L(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
 void M(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
 void N(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
 void mostrarTokens(char token[10], char tipo);
 
 // FUNCIONES AGREGADAS : Operaci�n Binaria
-//void AZ(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
-//void BZ(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
-//void NZ(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
+// void AZ(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
+// void BZ(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
+// void NZ(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
 
 // FUNCIONES AGREGADAS : Lectura y Escritura
 void lectura(int &syn, int &pos, char token[], char lin[], char &tipo, int &e, int lect);
@@ -37,8 +37,8 @@ void opEscritura(int &syn, int &pos, char token[], char lin[], char &tipo, int &
 void escrOper(int &syn, int &pos, char token[], char lin[], char &tipo, int &e, int rep, int escr);
 
 // FUNCIONES AGREGADAS: COMENTARIOS
-void ComentarioTipo1(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
-void ComentarioTipo2(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
+void ComentarioTipo1(int &syn, int &pos, char token[], char lin[], char &tipo, int &e, int &v);
+void ComentarioTipo2(int &syn, int &pos, char token[], char lin[], char &tipo, int &e, int &v);
 void ComentarioComplejo(int &syn, int &pos, char token[], char lin[], char &tipo, int &e, int &v);
 
 char palabraReservada[4][15] = { // Palabra reservadas
@@ -223,8 +223,13 @@ void S(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 {
 	if (strcmp(token, "/") == 0) //
 	{
+		int v = 1;
 		Scanner(syn, pos, token, lin, tipo);
-		ComentarioTipo1(syn, pos, token, lin, tipo, e);
+		ComentarioTipo1(syn, pos, token, lin, tipo, e, v);
+		if (v == 0)
+		{
+			S(syn, pos, token, lin, tipo, e);
+		}
 	}
 	else
 	{
@@ -234,29 +239,27 @@ void S(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 	}
 }
 
-void ComentarioTipo1(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
+void ComentarioTipo1(int &syn, int &pos, char token[], char lin[], char &tipo, int &e, int &v)
 {
-	if (strcmp(token, "/") == 0) // Suma = 2 / a
+	if (strcmp(token, "/") == 0)
 	{
 		e = 0;
 	}
 	else if (strcmp(token, "*") == 0)
 	{
-		int v = 1;
 		Scanner(syn, pos, token, lin, tipo);
 		ComentarioComplejo(syn, pos, token, lin, tipo, e, v);
 	}
 	else
 	{
-		e = 1; 
+		e = 1;
 	}
 }
 
-void ComentarioTipo2(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
+void ComentarioTipo2(int &syn, int &pos, char token[], char lin[], char &tipo, int &e, int &v)
 {
 	if (strcmp(token, "*") == 0)
 	{
-		int v = 1;
 		Scanner(syn, pos, token, lin, tipo);
 		ComentarioComplejo(syn, pos, token, lin, tipo, e, v);
 	}
@@ -274,6 +277,7 @@ void ComentarioComplejo(int &syn, int &pos, char token[], char lin[], char &tipo
 		if (strcmp(token, "/") == 0)
 		{
 			v = 0;
+			Scanner(syn, pos, token, lin, tipo);
 		}
 		else
 		{
@@ -301,17 +305,41 @@ void T(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 	}
 	else if (tipo == 'L')
 	{
-		int rep = 1, lect = 1;
+		int rep = 1, lect = 1, v = 1;
 		e = 0;
 		Scanner(syn, pos, token, lin, tipo);
-		opLectura(syn, pos, token, lin, tipo, e, rep, lect);
+		if (strcmp(token, "/") == 0)
+		{
+			Scanner(syn, pos, token, lin, tipo);
+			ComentarioTipo2(syn, pos, token, lin, tipo, e, v);
+			if (v == 0)
+			{
+				opLectura(syn, pos, token, lin, tipo, e, rep, lect);
+			}
+		}
+		else
+		{
+			opLectura(syn, pos, token, lin, tipo, e, rep, lect);
+		}
 	}
 	else if (tipo == 'S')
 	{
-		int rep = 1, escr = 1;
+		int rep = 1, escr = 1, v = 1;
 		e = 0;
 		Scanner(syn, pos, token, lin, tipo);
-		opEscritura(syn, pos, token, lin, tipo, e, rep, escr);
+		if (strcmp(token, "/") == 0)
+		{
+			Scanner(syn, pos, token, lin, tipo);
+			ComentarioTipo2(syn, pos, token, lin, tipo, e, v);
+			if (v == 0)
+			{
+				opEscritura(syn, pos, token, lin, tipo, e, rep, escr);
+			}
+		}
+		else
+		{
+			opEscritura(syn, pos, token, lin, tipo, e, rep, escr);
+		}
 	}
 	else
 	{
@@ -324,7 +352,20 @@ void A(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 	{
 		e = 0;
 		Scanner(syn, pos, token, lin, tipo);
-		B(syn, pos, token, lin, tipo, e);
+		if (strcmp(token, "/") == 0)
+		{
+			int v = 1;
+			Scanner(syn, pos, token, lin, tipo);
+			ComentarioTipo1(syn, pos, token, lin, tipo, e, v);
+			if (v == 0)
+			{
+				B(syn, pos, token, lin, tipo, e);
+			}
+		}
+		else
+		{
+			B(syn, pos, token, lin, tipo, e);
+		}
 	}
 	else
 	{
@@ -340,8 +381,13 @@ void B(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 	}
 	else if (strcmp(token, "/") == 0) //
 	{
+		int v = 1;
 		Scanner(syn, pos, token, lin, tipo);
-		ComentarioTipo1(syn, pos, token, lin, tipo, e);
+		ComentarioTipo1(syn, pos, token, lin, tipo, e, v);
+		if (v == 0)
+		{
+			B(syn, pos, token, lin, tipo, e);
+		}
 	}
 	else if (strcmp(token, "[") == 0)
 	{
@@ -398,8 +444,13 @@ void E(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 	}
 	else if (strcmp(token, "/") == 0) //
 	{
+		int v = 1;
 		Scanner(syn, pos, token, lin, tipo);
-		ComentarioTipo1(syn, pos, token, lin, tipo, e);
+		ComentarioTipo1(syn, pos, token, lin, tipo, e, v);
+		if (v == 0)
+		{
+			E(syn, pos, token, lin, tipo, e);
+		}
 	}
 	else if (strcmp(token, ",") == 0)
 	{
@@ -460,8 +511,13 @@ void I(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 	}
 	else if (strcmp(token, "/") == 0) //
 	{
+		int v = 1;
 		Scanner(syn, pos, token, lin, tipo);
-		ComentarioTipo1(syn, pos, token, lin, tipo, e);
+		ComentarioTipo1(syn, pos, token, lin, tipo, e, v);
+		if (v == 0)
+		{
+			I(syn, pos, token, lin, tipo, e);
+		}
 	}
 	else if (strcmp(token, ",") == 0)
 	{
@@ -558,6 +614,15 @@ void N(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 		{
 			e = 0;
 		}
+		else if (strcmp(token, "*") == 0)
+		{
+			int v = 1;
+			ComentarioTipo2(syn, pos, token, lin, tipo, e, v);
+			if (v == 0)
+			{
+				N(syn, pos, token, lin, tipo, e);
+			}
+		}
 		else
 		{
 			M(syn, pos, token, lin, tipo, e);
@@ -650,39 +715,101 @@ void opLectura(int &syn, int &pos, char token[], char lin[], char &tipo, int &e,
 		else
 		{
 			lect++;
-			lectura(syn, pos, token, lin, tipo, e, lect);
+			int v = 1;
+			if (strcmp(token, "/") == 0)
+			{
+				Scanner(syn, pos, token, lin, tipo);
+				ComentarioTipo2(syn, pos, token, lin, tipo, e, v);
+				if (v == 0)
+				{
+					lectura(syn, pos, token, lin, tipo, e, lect);
+				}
+			}
+			else
+			{
+				lectura(syn, pos, token, lin, tipo, e, lect);
+			}
 		}
 	}
 	else if (strcmp(token, "+") == 0 && lect > 1)
 	{
 		Scanner(syn, pos, token, lin, tipo);
-		lectOper(syn, pos, token, lin, tipo, e, rep, lect);
+		int v = 1;
+		e = 0;
+		if (strcmp(token, "/") == 0)
+		{
+			Scanner(syn, pos, token, lin, tipo);
+			ComentarioTipo2(syn, pos, token, lin, tipo, e, v);
+			if (v == 0)
+			{
+				lectOper(syn, pos, token, lin, tipo, e, rep, lect);
+			}
+		}
+		else
+		{
+			lectOper(syn, pos, token, lin, tipo, e, rep, lect);
+		}
 	}
 	else if (strcmp(token, "-") == 0 && lect > 1)
 	{
 		Scanner(syn, pos, token, lin, tipo);
-		lectOper(syn, pos, token, lin, tipo, e, rep, lect);
+		int v = 1;
+		e = 0;
+		if (strcmp(token, "/") == 0)
+		{
+			Scanner(syn, pos, token, lin, tipo);
+			ComentarioTipo2(syn, pos, token, lin, tipo, e, v);
+			if (v == 0)
+			{
+				lectOper(syn, pos, token, lin, tipo, e, rep, lect);
+			}
+		}
+		else
+		{
+			lectOper(syn, pos, token, lin, tipo, e, rep, lect);
+		}
 	}
 	else if (strcmp(token, "*") == 0 && lect > 1)
 	{
 		Scanner(syn, pos, token, lin, tipo);
-		lectOper(syn, pos, token, lin, tipo, e, rep, lect);
+		int v = 1;
+		e = 0;
+		if (strcmp(token, "/") == 0)
+		{
+			Scanner(syn, pos, token, lin, tipo);
+			ComentarioTipo2(syn, pos, token, lin, tipo, e, v);
+			if (v == 0)
+			{
+				lectOper(syn, pos, token, lin, tipo, e, rep, lect);
+			}
+		}
+		else
+		{
+			lectOper(syn, pos, token, lin, tipo, e, rep, lect);
+		}
 	}
 	else if (strcmp(token, "/") == 0 && lect > 1)
 	{
 		Scanner(syn, pos, token, lin, tipo);
-		lectOper(syn, pos, token, lin, tipo, e, rep, lect);
-	}
-	else if (strcmp(token, "") == 0 && lect > 1)
-	{
-		if (strcmp(token, "") == 0)
+		int v = 1;
+		e = 0;
+		if (strcmp(token, "/") == 0)
 		{
-			e = 0;
+			Scanner(syn, pos, token, lin, tipo);
+			ComentarioTipo2(syn, pos, token, lin, tipo, e, v);
+			if (v == 0)
+			{
+				lectOper(syn, pos, token, lin, tipo, e, rep, lect);
+			}
 		}
 		else
 		{
-			e = 1;
+			lectOper(syn, pos, token, lin, tipo, e, rep, lect);
 		}
+	}
+	else if (strcmp(token, "") == 0 && lect > 1)
+	{
+		e = 0;
 	}
 	else
 	{
@@ -695,7 +822,20 @@ void lectOper(int &syn, int &pos, char token[], char lin[], char &tipo, int &e, 
 	{
 		e = 0;
 		Scanner(syn, pos, token, lin, tipo);
-		opLectura(syn, pos, token, lin, tipo, e, rep, lect);
+		int v = 1;
+		if (strcmp(token, "/") == 0)
+		{
+			Scanner(syn, pos, token, lin, tipo);
+			ComentarioTipo2(syn, pos, token, lin, tipo, e, v);
+			if (v == 0)
+			{
+				opLectura(syn, pos, token, lin, tipo, e, rep, lect);
+			}
+		}
+		else
+		{
+			opLectura(syn, pos, token, lin, tipo, e, rep, lect);
+		}
 	}
 	else
 	{
@@ -730,28 +870,97 @@ void opEscritura(int &syn, int &pos, char token[], char lin[], char &tipo, int &
 		else
 		{
 			escr++;
-			escritura(syn, pos, token, lin, tipo, e, escr);
+			int v = 1;
+			if (strcmp(token, "/") == 0)
+			{
+				Scanner(syn, pos, token, lin, tipo);
+				ComentarioTipo2(syn, pos, token, lin, tipo, e, v);
+				if (v == 0)
+				{
+					escritura(syn, pos, token, lin, tipo, e, escr);
+				}
+			}
+			else
+			{
+				escritura(syn, pos, token, lin, tipo, e, escr);
+			}
 		}
 	}
 	else if (strcmp(token, "+") == 0 && escr > 1)
 	{
 		Scanner(syn, pos, token, lin, tipo);
-		escrOper(syn, pos, token, lin, tipo, e, rep, escr);
+		int v = 1;
+		e = 0;
+		if (strcmp(token, "/") == 0)
+		{
+			Scanner(syn, pos, token, lin, tipo);
+			ComentarioTipo2(syn, pos, token, lin, tipo, e, v);
+			if (v == 0)
+			{
+				escrOper(syn, pos, token, lin, tipo, e, rep, escr);
+			}
+		}
+		else
+		{
+			escrOper(syn, pos, token, lin, tipo, e, rep, escr);
+		}
 	}
 	else if (strcmp(token, "-") == 0 && escr > 1)
 	{
 		Scanner(syn, pos, token, lin, tipo);
-		escrOper(syn, pos, token, lin, tipo, e, rep, escr);
+		int v = 1;
+		e = 0;
+		if (strcmp(token, "/") == 0)
+		{
+			Scanner(syn, pos, token, lin, tipo);
+			ComentarioTipo2(syn, pos, token, lin, tipo, e, v);
+			if (v == 0)
+			{
+				escrOper(syn, pos, token, lin, tipo, e, rep, escr);
+			}
+		}
+		else
+		{
+			escrOper(syn, pos, token, lin, tipo, e, rep, escr);
+		}
 	}
 	else if (strcmp(token, "*") == 0 && escr > 1)
 	{
 		Scanner(syn, pos, token, lin, tipo);
-		escrOper(syn, pos, token, lin, tipo, e, rep, escr);
+		int v = 1;
+		e = 0;
+		if (strcmp(token, "/") == 0)
+		{
+			Scanner(syn, pos, token, lin, tipo);
+			ComentarioTipo2(syn, pos, token, lin, tipo, e, v);
+			if (v == 0)
+			{
+				escrOper(syn, pos, token, lin, tipo, e, rep, escr);
+			}
+		}
+		else
+		{
+			escrOper(syn, pos, token, lin, tipo, e, rep, escr);
+		}
 	}
 	else if (strcmp(token, "/") == 0 && escr > 1)
 	{
 		Scanner(syn, pos, token, lin, tipo);
-		escrOper(syn, pos, token, lin, tipo, e, rep, escr);
+		int v = 1;
+		e = 0;
+		if (strcmp(token, "/") == 0)
+		{
+			Scanner(syn, pos, token, lin, tipo);
+			ComentarioTipo2(syn, pos, token, lin, tipo, e, v);
+			if (v == 0)
+			{
+				escrOper(syn, pos, token, lin, tipo, e, rep, escr);
+			}
+		}
+		else
+		{
+			escrOper(syn, pos, token, lin, tipo, e, rep, escr);
+		}
 	}
 	else if (strcmp(token, "") == 0 && escr > 1)
 	{
@@ -768,7 +977,20 @@ void escrOper(int &syn, int &pos, char token[], char lin[], char &tipo, int &e, 
 	{
 		e = 0;
 		Scanner(syn, pos, token, lin, tipo);
-		opEscritura(syn, pos, token, lin, tipo, e, rep, escr);
+		int v = 1;
+		if (strcmp(token, "/") == 0)
+		{
+			Scanner(syn, pos, token, lin, tipo);
+			ComentarioTipo2(syn, pos, token, lin, tipo, e, v);
+			if (v == 0)
+			{
+				opEscritura(syn, pos, token, lin, tipo, e, rep, escr);
+			}
+		}
+		else
+		{
+			opEscritura(syn, pos, token, lin, tipo, e, rep, escr);
+		}
 	}
 	else
 	{

@@ -1,5 +1,5 @@
-suma=a+a=
-entero a, suma1=3, b[4]={7, 8, 9, 1}
+suma=a+a/*=-b*/
+entero a,/*suma1=3*/, b[4]={7, 8, 9, 1}
 real x, y=3;
 entero a=3,m=a
 lee>>a+b
