@@ -5,12 +5,12 @@
 
 using namespace std;
 
-void S(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
-void T(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
-void A(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
-void B(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
-void M(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
-void N(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
+void SimboloDistinguido(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
+void Reservada(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
+void ID(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
+void Operadores1(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
+void ValorAsignacion(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
+void Operadores2(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
 void mostrarTokens(char token[10], char tipo);
 
 // FUNCIONES AGREGADAS : Lectura y Escritura
@@ -30,7 +30,9 @@ char palabraReservada[4][15] = { // Palabra reservadas
 	"entero", "real", "lee", "escribe"};
 
 char operadorSimple[13][5] = { // Operadores simples
-	"+", "-", "*", "/", ";", ",","[","]","{","}" "=", ">", "<"};
+	"+", "-", "*", "/", ";", ",", "[", "]", "{", "}"
+												 "=",
+	">", "<"};
 
 int esLetra(char ch) // Identifica si es una letra
 {
@@ -189,11 +191,11 @@ int main()
 		int e = 0; // Error = 1 , Correcto = 0
 
 		Scanner(syn, pos, token, linFuente, tipo);
-		S(syn, pos, token, linFuente, tipo, e);
+		SimboloDistinguido(syn, pos, token, linFuente, tipo, e);
 
 		if (e == 1)
 		{
-			cout << "\t - Error encontrado en la linea " << lin << " columna " << pos << " -\n";
+			cout << "\t - ¿ERROR! La fila " << lin << " caracter " << pos << " -\n";
 		}
 		else
 		{
@@ -204,7 +206,7 @@ int main()
 	return 0;
 }
 
-void S(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
+void SimboloDistinguido(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 {
 	if (strcmp(token, "/") == 0) //
 	{
@@ -213,17 +215,18 @@ void S(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 		ComentarioTipo1(syn, pos, token, lin, tipo, e, v);
 		if (v == 0)
 		{
-			S(syn, pos, token, lin, tipo, e);
+			SimboloDistinguido(syn, pos, token, lin, tipo, e);
 		}
 	}
-	else if(strcmp(token,"")==0){
-		e=0;
+	else if (strcmp(token, "") == 0)
+	{
+		e = 0;
 	}
 	else
 	{
-		T(syn, pos, token, lin, tipo, e); // si empieza con palabra reservada: entero, real, lee o escribe
+		Reservada(syn, pos, token, lin, tipo, e); // si empieza con palabra reservada: entero, real, lee o escribe
 		if (e != 0)
-			A(syn, pos, token, lin, tipo, e); // si empieza con un identificador
+			ID(syn, pos, token, lin, tipo, e); // si empieza con un identificador
 	}
 }
 
@@ -283,7 +286,7 @@ void ComentarioComplejo(int &syn, int &pos, char token[], char lin[], char &tipo
 	}
 }
 
-void T(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
+void Reservada(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 {
 	if (tipo == 'N')
 	{
@@ -296,12 +299,12 @@ void T(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 			ComentarioTipo2(syn, pos, token, lin, tipo, e, v);
 			if (v == 0)
 			{
-				A(syn, pos, token, lin, tipo, e);
+				ID(syn, pos, token, lin, tipo, e);
 			}
 		}
 		else
 		{
-			A(syn, pos, token, lin, tipo, e);
+			ID(syn, pos, token, lin, tipo, e);
 		}
 	}
 	else if (tipo == 'L')
@@ -347,7 +350,7 @@ void T(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 		e = 1;
 	}
 }
-void A(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
+void ID(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 {
 	if (tipo == 'I')
 	{
@@ -360,12 +363,12 @@ void A(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 			ComentarioTipo1(syn, pos, token, lin, tipo, e, v);
 			if (v == 0)
 			{
-				B(syn, pos, token, lin, tipo, e);
+				Operadores1(syn, pos, token, lin, tipo, e);
 			}
 		}
 		else
 		{
-			B(syn, pos, token, lin, tipo, e);
+			Operadores1(syn, pos, token, lin, tipo, e);
 		}
 	}
 	else
@@ -373,12 +376,12 @@ void A(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 		e = 1;
 	}
 }
-void B(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
+void Operadores1(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 {
 	if (strcmp(token, ",") == 0)
 	{
 		Scanner(syn, pos, token, lin, tipo);
-		A(syn, pos, token, lin, tipo, e);
+		ID(syn, pos, token, lin, tipo, e);
 	}
 	else if (strcmp(token, "/") == 0) //
 	{
@@ -387,13 +390,13 @@ void B(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 		ComentarioTipo1(syn, pos, token, lin, tipo, e, v);
 		if (v == 0)
 		{
-			B(syn, pos, token, lin, tipo, e);
+			Operadores1(syn, pos, token, lin, tipo, e);
 		}
 	}
 	else if (strcmp(token, "=") == 0)
 	{
 		Scanner(syn, pos, token, lin, tipo);
-		M(syn, pos, token, lin, tipo, e);
+		ValorAsignacion(syn, pos, token, lin, tipo, e);
 		// aquiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
 	}
 	else if (strcmp(token, "") == 0)
@@ -405,19 +408,19 @@ void B(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 		e = 1;
 	}
 }
-void M(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
+void ValorAsignacion(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 {
 	if (tipo == 'D' || tipo == 'E' || tipo == 'I')
 	{
 		Scanner(syn, pos, token, lin, tipo);
-		N(syn, pos, token, lin, tipo, e);
+		Operadores2(syn, pos, token, lin, tipo, e);
 	}
 	else
 	{
 		e = 1;
 	}
 }
-void N(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
+void Operadores2(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 {
 	if (strcmp(token, "") == 0)
 	{
@@ -426,22 +429,22 @@ void N(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 	else if (strcmp(token, ",") == 0)
 	{
 		Scanner(syn, pos, token, lin, tipo);
-		A(syn, pos, token, lin, tipo, e);
+		ID(syn, pos, token, lin, tipo, e);
 	}
 	else if (strcmp(token, "+") == 0)
 	{
 		Scanner(syn, pos, token, lin, tipo);
-		M(syn, pos, token, lin, tipo, e);
+		ValorAsignacion(syn, pos, token, lin, tipo, e);
 	}
 	else if (strcmp(token, "-") == 0)
 	{
 		Scanner(syn, pos, token, lin, tipo);
-		M(syn, pos, token, lin, tipo, e);
+		ValorAsignacion(syn, pos, token, lin, tipo, e);
 	}
 	else if (strcmp(token, "*") == 0)
 	{
 		Scanner(syn, pos, token, lin, tipo);
-		M(syn, pos, token, lin, tipo, e);
+		ValorAsignacion(syn, pos, token, lin, tipo, e);
 	}
 	else if (strcmp(token, "/") == 0)
 	{
@@ -456,12 +459,12 @@ void N(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 			ComentarioTipo2(syn, pos, token, lin, tipo, e, v);
 			if (v == 0)
 			{
-				N(syn, pos, token, lin, tipo, e);
+				Operadores2(syn, pos, token, lin, tipo, e);
 			}
 		}
 		else
 		{
-			M(syn, pos, token, lin, tipo, e);
+			ValorAsignacion(syn, pos, token, lin, tipo, e);
 		}
 	}
 	else
