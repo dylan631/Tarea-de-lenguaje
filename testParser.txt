@@ -1,5 +1,6 @@
 suma=a+a/*=-b*/
 entero /*suma1=3*/b[4]={7, 8, 9, 1}
+entero b[4]={7, 8, 9, 1}
 real x, y=3;
 entero a=3,m=a
 lee>>a+b

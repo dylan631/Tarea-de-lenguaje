@@ -37,7 +37,7 @@ char palabraReservada[4][15] = { // Palabra reservadas
 	"entero", "real", "lee", "escribe"};
 
 char operadorSimple[13][5] = { // Operadores simples
-	"+", "-", "*", "/", ";", ",", "[", "]", "{", "}", "=", ">", "<"};
+	"+", "-", "*", "/", ";", ",","[","]","{","}" "=", ">", "<"};
 
 int esLetra(char ch) // Identifica si es una letra
 {
@@ -397,11 +397,6 @@ void B(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 			B(syn, pos, token, lin, tipo, e);
 		}
 	}
-	else if (strcmp(token, "[") == 0)
-	{
-		Scanner(syn, pos, token, lin, tipo);
-		C(syn, pos, token, lin, tipo, e);
-	}
 	else if (strcmp(token, "=") == 0)
 	{
 		Scanner(syn, pos, token, lin, tipo);
@@ -417,32 +412,7 @@ void B(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 		e = 1;
 	}
 }
-void C(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
-{
-	if (tipo == 'D' || tipo == 'E')
-	{
-		e = 0;
-		Scanner(syn, pos, token, lin, tipo);
-		D(syn, pos, token, lin, tipo, e);
-	}
-	else
-	{
-		e = 1;
-	}
-}
-void D(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
-{
-	if (strcmp(token, "]") == 0)
-	{
-		e = 0;
-		Scanner(syn, pos, token, lin, tipo);
-		E(syn, pos, token, lin, tipo, e);
-	}
-	else
-	{
-		e = 1;
-	}
-}
+/*
 void E(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 {
 	if (strcmp(token, "=") == 0)
@@ -472,7 +442,7 @@ void E(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 }
 void F(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 {
-	if (strcmp(token, "{") == 0)
+	if (strcmp(token, "{") == 0) //Se elimina
 	{
 		Scanner(syn, pos, token, lin, tipo);
 		G(syn, pos, token, lin, tipo, e);
@@ -494,6 +464,7 @@ void G(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 		e = 1;
 	}
 }
+
 void H(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 {
 	if (strcmp(token, "}") == 0)
@@ -511,6 +482,7 @@ void H(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 		e = 1;
 	}
 }
+
 void I(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 {
 	if (strcmp(token, "") == 0)
@@ -537,7 +509,7 @@ void I(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 		e = 1;
 	}
 }
-
+*/
 void M(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 {
 	if (tipo == 'D' || tipo == 'E' || tipo == 'I')
