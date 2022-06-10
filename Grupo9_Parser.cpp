@@ -16,17 +16,9 @@ void F(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
 void G(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
 void H(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
 void I(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
-// void J(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
-// void K(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
-// void L(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
 void M(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
 void N(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
 void mostrarTokens(char token[10], char tipo);
-
-// FUNCIONES AGREGADAS : Operaci�n Binaria
-// void AZ(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
-// void BZ(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
-// void NZ(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
 
 // FUNCIONES AGREGADAS : Lectura y Escritura
 void lectura(int &syn, int &pos, char token[], char lin[], char &tipo, int &e, int lect);
@@ -231,6 +223,9 @@ void S(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 			S(syn, pos, token, lin, tipo, e);
 		}
 	}
+	else if(strcmp(token,"")==0){
+		e=0;
+	}
 	else
 	{
 		T(syn, pos, token, lin, tipo, e); // si empieza con palabra reservada: entero, real, lee o escribe
@@ -299,9 +294,22 @@ void T(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 {
 	if (tipo == 'N')
 	{
+		int v = 1;
 		e = 0;
 		Scanner(syn, pos, token, lin, tipo);
-		A(syn, pos, token, lin, tipo, e);
+		if (strcmp(token, "/") == 0)
+		{
+			Scanner(syn, pos, token, lin, tipo);
+			ComentarioTipo2(syn, pos, token, lin, tipo, e, v);
+			if (v == 0)
+			{
+				A(syn, pos, token, lin, tipo, e);
+			}
+		}
+		else
+		{
+			A(syn, pos, token, lin, tipo, e);
+		}
 	}
 	else if (tipo == 'L')
 	{
@@ -529,45 +537,6 @@ void I(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 		e = 1;
 	}
 }
-/*
-void J(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
-{
-	if (strcmp(token, "=") == 0)
-	{
-		Scanner(syn, pos, token, lin, tipo);
-		K(syn, pos, token, lin, tipo, e);
-	}
-	else
-	{
-		e = 1;
-	}
-}
-
-void K(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
-{
-	if (tipo == 'D' || tipo == 'E')
-	{
-		Scanner(syn, pos, token, lin, tipo);
-		L(syn, pos, token, lin, tipo, e);
-	}
-	else
-	{
-		e = 1;
-	}
-}
-
-void L(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
-{
-	if (strcmp(token, "") == 0)
-	{
-		e = 0;
-	}
-	else
-	{
-		e = 1;
-	}
-}
-*/
 
 void M(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 {
@@ -633,60 +602,7 @@ void N(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 		e = 1;
 	}
 }
-/*
-void AZ(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
-{
-	if (tipo == 'I' || tipo == 'E' || tipo == 'D')
-	{
-		e = 0;
-		Scanner(syn, pos, token, lin, tipo);
-		BZ(syn, pos, token, lin, tipo, e);
-	}
-	else
-	{
-		e = 1;
-	}
-}
 
-void BZ(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
-{
-	if (strcmp(token, "+") == 0)
-	{
-		Scanner(syn, pos, token, lin, tipo);
-		AZ(syn, pos, token, lin, tipo, e);
-	}
-	else if (strcmp(token, "-") == 0)
-	{
-		Scanner(syn, pos, token, lin, tipo);
-		AZ(syn, pos, token, lin, tipo, e);
-	}
-	else if (strcmp(token, "*") == 0)
-	{
-		Scanner(syn, pos, token, lin, tipo);
-		AZ(syn, pos, token, lin, tipo, e);
-	}
-	else if (strcmp(token, "/") == 0)
-	{
-		Scanner(syn, pos, token, lin, tipo);
-		if (strcmp(token, "/") == 0)
-		{
-			e = 0;
-		}
-		else
-		{
-			AZ(syn, pos, token, lin, tipo, e);
-		}
-	}
-	else if (strcmp(token, "") == 0)
-	{
-		e = 0;
-	}
-	else
-	{
-		e = 1;
-	}
-}
-*/
 void lectura(int &syn, int &pos, char token[], char lin[], char &tipo, int &e, int lect)
 {
 	if (tipo == 'I')
