@@ -9,13 +9,6 @@ void S(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
 void T(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
 void A(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
 void B(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
-void C(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
-void D(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
-void E(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
-void F(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
-void G(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
-void H(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
-void I(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
 void M(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
 void N(int &syn, int &pos, char token[], char lin[], char &tipo, int &e);
 void mostrarTokens(char token[10], char tipo);
@@ -412,104 +405,6 @@ void B(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 		e = 1;
 	}
 }
-/*
-void E(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
-{
-	if (strcmp(token, "=") == 0)
-	{
-		Scanner(syn, pos, token, lin, tipo);
-		F(syn, pos, token, lin, tipo, e);
-	}
-	else if (strcmp(token, "/") == 0) //
-	{
-		int v = 1;
-		Scanner(syn, pos, token, lin, tipo);
-		ComentarioTipo1(syn, pos, token, lin, tipo, e, v);
-		if (v == 0)
-		{
-			E(syn, pos, token, lin, tipo, e);
-		}
-	}
-	else if (strcmp(token, ",") == 0)
-	{
-		Scanner(syn, pos, token, lin, tipo);
-		A(syn, pos, token, lin, tipo, e);
-	}
-	else
-	{
-		e = 1;
-	}
-}
-void F(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
-{
-	if (strcmp(token, "{") == 0) //Se elimina
-	{
-		Scanner(syn, pos, token, lin, tipo);
-		G(syn, pos, token, lin, tipo, e);
-	}
-	else
-	{
-		e = 1;
-	}
-}
-void G(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
-{
-	if (tipo == 'D' || tipo == 'E')
-	{
-		Scanner(syn, pos, token, lin, tipo);
-		H(syn, pos, token, lin, tipo, e);
-	}
-	else
-	{
-		e = 1;
-	}
-}
-
-void H(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
-{
-	if (strcmp(token, "}") == 0)
-	{
-		Scanner(syn, pos, token, lin, tipo);
-		I(syn, pos, token, lin, tipo, e);
-	}
-	else if (strcmp(token, ",") == 0)
-	{
-		Scanner(syn, pos, token, lin, tipo);
-		G(syn, pos, token, lin, tipo, e);
-	}
-	else
-	{
-		e = 1;
-	}
-}
-
-void I(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
-{
-	if (strcmp(token, "") == 0)
-	{
-		e = 0;
-	}
-	else if (strcmp(token, "/") == 0) //
-	{
-		int v = 1;
-		Scanner(syn, pos, token, lin, tipo);
-		ComentarioTipo1(syn, pos, token, lin, tipo, e, v);
-		if (v == 0)
-		{
-			I(syn, pos, token, lin, tipo, e);
-		}
-	}
-	else if (strcmp(token, ",") == 0)
-	{
-		Scanner(syn, pos, token, lin, tipo);
-		A(syn, pos, token, lin, tipo, e);
-	}
-	else
-	{
-		e = 1;
-	}
-}
-*/
 void M(int &syn, int &pos, char token[], char lin[], char &tipo, int &e)
 {
 	if (tipo == 'D' || tipo == 'E' || tipo == 'I')
