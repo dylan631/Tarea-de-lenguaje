@@ -5,33 +5,47 @@
 using namespace std;
 
 void Scanner(int &verificador, int &pos, char token[], char linFuente[], char &tipo);
-void S(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e);
-void A(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e);
-void B(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e);
-void C(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e);
-void V(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e, int &cont);
-void J(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e, int &cont);
-void D(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e, int &cont);
 void mostrarTokens(char token[10], char tipo);
+void AFA(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e);
+void AF(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e);
+void U(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e);
+void AE(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e);
+void Q(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e);
+void AD(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e);
+void T(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e);
+void R(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e);
+void ABA(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e);
+void AB(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e);
+void H(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e);
+void AC(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e);
+void K(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e);
+void I(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e);
+void G(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e);
+void F(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e);
+void N(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e);
+void J(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e);
+void L(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e);
+void M(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e);
+void V(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e);
+void D(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e);
+void B(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e);
+void W(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e);
+void Z(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e);
+void C(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e);
+void X(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e);
+void A(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e);
+void AH(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e);
+void P(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e);
+void S(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e);
 
-// FUNCIONES AGREGADAS : Lectura y Escritura
-void F(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e, int lect);
-void G(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e, int rep, int lect);
-void H(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e, int rep, int lect);
-void R(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e, int escr);
-void T(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e, int rep, int escr);
-void U(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e, int rep, int escr);
-
-// FUNCIONES AGREGADAS: COMENTARIOS
-void M(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e, int &v);
-void N(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e, int &v);
-void P(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e, int &v);
 
 char palabraReservada[4][15] = { 
 	"entero", "real", "lee", "escribe"};
 
 char operadorSimple[15][5] = { 
 	"+", "-", "*", "/", ";", ",", "[", "]", "{", "}", "=", ">", "<", "(", ")"};
+
+char operadorComplejo[5][5] = {">>", "<<", "/*","*/", "//"};
 
 //Verificar si es una letra
 int esLetra(char ch){
@@ -130,7 +144,7 @@ int main(){
 //Scanner de tokens
 void Scanner(int &verificador, int &pos, char token[], char linFuente[], char &tipo){
 	
-	char ch;
+	char ch,mutil[1];
 	int ptoken = 0, i = 0;
 	tipo = ' ';
 	verificador = 0;
@@ -197,667 +211,544 @@ void Scanner(int &verificador, int &pos, char token[], char linFuente[], char &t
 	}
 	else if ((verificador = esOperadorSimple(ch)) != -1)
 	{
+		token[ptoken++] = ch;//TOKEN[0] = '/' 0
+		ch = linFuente[++pos]; 
 		token[ptoken++] = ch;
-		tipo = 'O'; // Operadores 
+		for (i = 0; i < sizeof(operadorComplejo) / 5; i++)
+		{			
+			if (strcmp(token,operadorComplejo[i])== 0)
+			{				
+				tipo = 'C'; // OPERADOR COMPLEJO =
+				pos++;
+				return;
+			}
+		}
+		token[--ptoken] = '\0'; 
+		--pos;
+		tipo = 'O'; // Operadores
 		pos++;
 		return;
 	}
 }
 
+
 void S(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e){
-	if (strcmp(token, "/") == 0) 
-	{
-		int v = 1;
+	if(strcmp(token, "//") == 0){
+		e=0;
+	}
+	else if(strcmp(token, "/*") == 0){
 		Scanner(verificador, pos, token, lin, tipo);
-		M(verificador, pos, token, lin, tipo, e, v);
-		if (v == 0)
-		{
-			S(verificador, pos, token, lin, tipo, e);
-		}
+		P(verificador, pos, token, lin, tipo,e);
+		S(verificador, pos, token, lin, tipo,e);
 	}
-	else if (strcmp(token, "") == 0)
-	{
-		e = 0;
+	else if(tipo=='N'||tipo=='L'||tipo=='S'){
+		A(verificador, pos, token, lin, tipo, e);
 	}
-	else
-	{
-		A(verificador, pos, token, lin, tipo, e); // si empieza con palabra reservada: entero, real, lee o escribe
-		if (e != 0)
-			B(verificador, pos, token, lin, tipo, e); // si empieza con un identificador
+	else if(tipo=='I'){
+		B(verificador, pos, token, lin, tipo, e);
+	}
+	else if(strcmp(token, "") == 0){
+		Scanner(verificador, pos, token, lin, tipo);
+		e=0;
+	}
+	else{
+		e=1;
 	}
 }
 
-void M(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e, int &v){
-	if (strcmp(token, "/") == 0)
-	{
-		e = 0;
-	}
-	else if (strcmp(token, "*") == 0)
-	{
+void P(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e){
+	if(strcmp(token,"*/")== 0){
 		Scanner(verificador, pos, token, lin, tipo);
-		P(verificador, pos, token, lin, tipo, e, v);
-	}
-	else
-	{
-		e = 1;
-	}
-}
-
-void N(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e, int &v){
-	if (strcmp(token, "*") == 0)
-	{
-		Scanner(verificador, pos, token, lin, tipo);
-		P(verificador, pos, token, lin, tipo, e, v);
-	}
-	else
-	{
-		e = 1;
-	}
-}
-
-void P(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e, int &v){
-	if (strcmp(token, "*") == 0)
-	{
-		Scanner(verificador, pos, token, lin, tipo);
-		if (strcmp(token, "/") == 0)
-		{
-			v = 0;
-			Scanner(verificador, pos, token, lin, tipo);
-		}
-		else
-		{
-			P(verificador, pos, token, lin, tipo, e, v);
-		}
+		e=0;
 	}
 	else if (tipo != ' ')
 	{
 		Scanner(verificador, pos, token, lin, tipo);
-		P(verificador, pos, token, lin, tipo, e, v);
+		P(verificador, pos, token, lin, tipo, e);
 	}
-	else
-	{
-		e = 1;
+	else{
+		e=1;
 	}
 }
 
 void A(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e){
-	if (tipo == 'N')
-	{
-		int v = 1;
-		e = 0;
+	if(tipo=='N'){
 		Scanner(verificador, pos, token, lin, tipo);
-		if (strcmp(token, "/") == 0)
-		{
-			Scanner(verificador, pos, token, lin, tipo);
-			N(verificador, pos, token, lin, tipo, e, v);
-			if (v == 0)
-			{
-				B(verificador, pos, token, lin, tipo, e);
-			}
-		}
-		else
-		{
-			B(verificador, pos, token, lin, tipo, e);
-		}
+		X(verificador, pos, token, lin, tipo, e);
 	}
-	else if (tipo == 'L')
-	{
-		int rep = 1, lect = 1, v = 1;
-		e = 0;
+	else if(tipo == 'L'){
 		Scanner(verificador, pos, token, lin, tipo);
-		if (strcmp(token, "/") == 0)
-		{
-			Scanner(verificador, pos, token, lin, tipo);
-			N(verificador, pos, token, lin, tipo, e, v);
-			if (v == 0)
-			{
-				G(verificador, pos, token, lin, tipo, e, rep, lect);
-			}
-		}
-		else
-		{
-			G(verificador, pos, token, lin, tipo, e, rep, lect);
-		}
+		Z(verificador, pos, token, lin, tipo, e);
 	}
-	else if (tipo == 'S')
-	{
-		int rep = 1, escr = 1, v = 1;
-		e = 0;
+	else if(tipo == 'S'){
 		Scanner(verificador, pos, token, lin, tipo);
-		if (strcmp(token, "/") == 0)
-		{
-			Scanner(verificador, pos, token, lin, tipo);
-			N(verificador, pos, token, lin, tipo, e, v);
-			if (v == 0)
-			{
-				T(verificador, pos, token, lin, tipo, e, rep, escr);
-			}
-		}
-		else
-		{
-			T(verificador, pos, token, lin, tipo, e, rep, escr);
-		}
+		W(verificador, pos, token, lin, tipo, e);
 	}
-	else
-	{
-		e = 1;
+	else{
+		e=1;
 	}
 }
-void B(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e){
-	if (tipo == 'I')
-	{
-		e = 0;
+
+void X(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e){
+	if(strcmp(token,"/*")== 0){
 		Scanner(verificador, pos, token, lin, tipo);
-		if (strcmp(token, "/") == 0)
-		{
-			int v = 1;
-			Scanner(verificador, pos, token, lin, tipo);
-			M(verificador, pos, token, lin, tipo, e, v);
-			if (v == 0)
-			{
-				C(verificador, pos, token, lin, tipo, e);
-			}
-		}
-		else
-		{
-			C(verificador, pos, token, lin, tipo, e);
-		}
+		P(verificador, pos, token, lin, tipo, e);
+		B(verificador, pos, token, lin, tipo, e);
 	}
-	else
-	{
-		e = 1;
+	else if(tipo=='I'){
+		B(verificador, pos, token, lin, tipo, e);
+	}
+	else{
+		e=1;
+	}
+}
+
+void Z(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e){
+	if(strcmp(token,"/*")== 0){
+		Scanner(verificador, pos, token, lin, tipo);
+		P(verificador, pos, token, lin, tipo, e);
+		G(verificador, pos, token, lin, tipo, e);
+	}
+	else if(strcmp(token,">>")== 0){
+		G(verificador, pos, token, lin, tipo, e);
+	}
+	else{
+		e=1;
+	}
+}
+
+void W(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e){
+	if(strcmp(token,"/*")== 0){
+		Scanner(verificador, pos, token, lin, tipo);
+		P(verificador, pos, token, lin, tipo, e);
+		T(verificador, pos, token, lin, tipo, e);
+	}
+	else if(strcmp(token,"<<")== 0){
+		T(verificador, pos, token, lin, tipo, e);
+	}
+	else{
+		e=1;
+	}
+}
+
+void B(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e){
+	if(tipo=='I'){
+		Scanner(verificador, pos, token, lin, tipo);
+		D(verificador, pos, token, lin, tipo, e);
+	}
+	else{
+		e=1;
+	}
+}
+
+void D(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e){
+	if(strcmp(token,"//")== 0){
+		e=0;
+	}
+	if(strcmp(token,"")== 0||strcmp(token,",")== 0||strcmp(token,"/*")== 0||strcmp(token,"//")== 0||strcmp(token,"=")== 0){
+		C(verificador, pos, token, lin, tipo, e);
+	}
+	else{
+		e=1;
 	}
 }
 
 void C(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e){
-	if (strcmp(token, ",") == 0)
-	{
+	if(strcmp(token,",")== 0){
 		Scanner(verificador, pos, token, lin, tipo);
 		B(verificador, pos, token, lin, tipo, e);
 	}
-	else if (strcmp(token, "/") == 0)
-	{
-		int v = 1;
+	else if(strcmp(token,"/*")== 0){
 		Scanner(verificador, pos, token, lin, tipo);
-		M(verificador, pos, token, lin, tipo, e, v);
-		if (v == 0)
-		{
-			C(verificador, pos, token, lin, tipo, e);
-		}
+		P(verificador, pos, token, lin, tipo, e);
+		C(verificador, pos, token, lin, tipo, e);
 	}
-	else if (strcmp(token, "=") == 0)
-	{
-		int parentesis=0;
+	else if(strcmp(token,"//")== 0){
+		e=0;
+	}
+	else if(strcmp(token,"=")== 0){
 		Scanner(verificador, pos, token, lin, tipo);
-		V(verificador, pos, token, lin, tipo, e, parentesis);
+		V(verificador, pos, token, lin, tipo, e);
+		AH(verificador, pos, token, lin, tipo, e);
 	}
-	else if (strcmp(token, "") == 0)
-	{
-		e = 0;
+	else if(strcmp(token,"")== 0){
+		e=0;
 	}
-	else
-	{
-		e = 1;
+	else{
+		e=1;
 	}
 }
 
-void V(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e, int &cont){
-	if ((tipo == 'D' || tipo == 'E' || tipo == 'I') )
-	{
-		Scanner(verificador, pos, token, lin, tipo);
-		J(verificador, pos, token, lin, tipo, e, cont);
-	}
-	else if (strcmp(token, "+") == 0 || strcmp(token, "-") == 0 || strcmp(token, "*") == 0 || strcmp(token, "/") == 0)
-	{
-		J(verificador, pos, token, lin, tipo, e, cont);
-	}
-	else if (strcmp(token, "(") == 0)
-	{
-		cont++;
-		Scanner(verificador, pos, token, lin, tipo);
-		V(verificador, pos, token, lin, tipo, e, cont);
-	}
-	else if (strcmp(token, ")") == 0)
-	{
-		cont--;
-		if (cont > 0)
-		{
-			Scanner(verificador, pos, token, lin, tipo);
-			J(verificador, pos, token, lin, tipo, e, cont);
-		}
-		else if (cont == 0)
-		{
-			Scanner(verificador, pos, token, lin, tipo);
-			if(strcmp(token, ",") == 0)
-			{
-				D(verificador, pos, token, lin, tipo, e, cont);
-			}
-			else
-			{
-				V(verificador, pos, token, lin, tipo, e, cont);
-			}
-		}
-		else
-		{
-			e = 1;
-		}
-	}
-	else if (strcmp(token, "") == 0)
-	{
-		if (cont == 0)
-		{
-			e = 0;
-		}
-		else
-		{
-			e = 1;
-		}
-	}
-	else
-	{
-		e = 1;
-	}
-}
-
-void J(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e, int &cont){
-	if (strcmp(token, "+") == 0)
-	{
-		Scanner(verificador, pos, token, lin, tipo);
-		V(verificador, pos, token, lin, tipo, e, cont);
-	}
-	else if (strcmp(token, "-") == 0)
-	{
-		Scanner(verificador, pos, token, lin, tipo);
-		V(verificador, pos, token, lin, tipo, e, cont);
-	}
-	else if (strcmp(token, "*") == 0)
-	{
-		Scanner(verificador, pos, token, lin, tipo);
-		V(verificador, pos, token, lin, tipo, e, cont);
-	}
-	else if (strcmp(token, "(") == 0)
-	{
-		V(verificador, pos, token, lin, tipo, e, cont);
-	}
-	else if (strcmp(token, ")") == 0)
-	{
-		V(verificador, pos, token, lin, tipo, e, cont);
-	}
-	else if (strcmp(token, ",") == 0)
-	{
-		D(verificador, pos, token, lin, tipo, e, cont);
-	}
-	else if (strcmp(token, "") == 0)
-	{
-		V(verificador, pos, token, lin, tipo, e, cont);
-	}
-	else if (strcmp(token, "/") == 0)
-	{
-		Scanner(verificador, pos, token, lin, tipo);
-		if (strcmp(token, "/") == 0)
-		{
-			e = 0;
-		}
-		else if (strcmp(token, "*") == 0)
-		{
-			int v = 1;
-			N(verificador, pos, token, lin, tipo, e, v);
-			if (v == 0)
-			{
-				J(verificador, pos, token, lin, tipo, e, cont);
-			}
-		}
-		else
-		{
-			V(verificador, pos, token, lin, tipo, e, cont);
-		}
-	}
-	else
-	{
-		e = 1;
-	}
-}
-
-void D(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e, int &cont){
-	if (strcmp(token, ",") == 0)
-	{
+void AH(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e){
+	if(strcmp(token,",")== 0){
 		Scanner(verificador, pos, token, lin, tipo);
 		B(verificador, pos, token, lin, tipo, e);
 	}
-	else if (strcmp(token, "/") == 0)
-	{
-		Scanner(verificador, pos, token, lin, tipo);
-		if (strcmp(token, "/") == 0)
-		{
-			e = 0;
-		}
-		else if (strcmp(token, "*") == 0)
-		{
-			int v = 1;
-			N(verificador, pos, token, lin, tipo, e, v);
-			if (v == 0)
-			{
-				D(verificador, pos, token, lin, tipo, e, cont);
-			}
-		}
-		else
-		{
-			e = 1;
-		}
+	else if(strcmp(token,"")==0){
+		e=0;
 	}
-	else
-	{
-		e = 1;
+	else{
+		e=1;
 	}
 }
 
-void F(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e, int lect){
-	if (tipo == 'I')
-	{
-		int rep = 1;
-		e = 0;
+void V(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e){
+	if(tipo=='D'){
 		Scanner(verificador, pos, token, lin, tipo);
-		G(verificador, pos, token, lin, tipo, e, rep, lect);
+		J(verificador, pos, token, lin, tipo, e);
 	}
-	else
-	{
-		e = 1;
+	else if(tipo=='E'){
+		Scanner(verificador, pos, token, lin, tipo);
+		J(verificador, pos, token, lin, tipo, e);
+	}
+	else if(tipo=='I'){
+		Scanner(verificador, pos, token, lin, tipo);
+		J(verificador, pos, token, lin, tipo, e);
+	}
+	else if(strcmp(token,"(")== 0){
+		Scanner(verificador, pos, token, lin, tipo);
+		L(verificador, pos, token, lin, tipo, e);
+		Scanner(verificador, pos, token, lin, tipo);
+		if(strcmp(token,")")== 0){
+			Scanner(verificador, pos, token, lin, tipo);
+			M(verificador, pos, token, lin, tipo, e);
+		}else{
+			e=1;
+		}
+	}
+	else{
+		e=1;
 	}
 }
 
-void G(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e, int rep, int lect){
-	if (strcmp(token, ">") == 0)
-	{
-		e = 0;
-		rep++;
+void M(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e){
+	if(strcmp(token,",")== 0){
+		B(verificador, pos, token, lin, tipo, e);
+	}
+	else if(strcmp(token,"")== 0){
+		e=0;
+	}
+	else if(strcmp(token,"//")== 0){
+		e=0;
+	}
+	else if(strcmp(token,"/*")== 0){
 		Scanner(verificador, pos, token, lin, tipo);
-		if (rep <= 2)
-		{
-			G(verificador, pos, token, lin, tipo, e, rep, lect);
-		}
-		else
-		{
-			lect++;
-			int v = 1;
-			if (strcmp(token, "/") == 0)
-			{
-				Scanner(verificador, pos, token, lin, tipo);
-				N(verificador, pos, token, lin, tipo, e, v);
-				if (v == 0)
-				{
-					F(verificador, pos, token, lin, tipo, e, lect);
-				}
-			}
-			else
-			{
-				F(verificador, pos, token, lin, tipo, e, lect);
-			}
-		}
+		P(verificador, pos, token, lin, tipo, e);
+		J(verificador, pos, token, lin, tipo, e);
 	}
-	else if (strcmp(token, "+") == 0 && lect > 1)
-	{
-		Scanner(verificador, pos, token, lin, tipo);
-		int v = 1;
-		e = 0;
-		if (strcmp(token, "/") == 0)
-		{
-			Scanner(verificador, pos, token, lin, tipo);
-			N(verificador, pos, token, lin, tipo, e, v);
-			if (v == 0)
-			{
-				H(verificador, pos, token, lin, tipo, e, rep, lect);
-			}
-		}
-		else
-		{
-			H(verificador, pos, token, lin, tipo, e, rep, lect);
-		}
-	}
-	else if (strcmp(token, "-") == 0 && lect > 1)
-	{
-		Scanner(verificador, pos, token, lin, tipo);
-		int v = 1;
-		e = 0;
-		if (strcmp(token, "/") == 0)
-		{
-			Scanner(verificador, pos, token, lin, tipo);
-			N(verificador, pos, token, lin, tipo, e, v);
-			if (v == 0)
-			{
-				H(verificador, pos, token, lin, tipo, e, rep, lect);
-			}
-		}
-		else
-		{
-			H(verificador, pos, token, lin, tipo, e, rep, lect);
-		}
-	}
-	else if (strcmp(token, "*") == 0 && lect > 1)
-	{
-		Scanner(verificador, pos, token, lin, tipo);
-		int v = 1;
-		e = 0;
-		if (strcmp(token, "/") == 0)
-		{
-			Scanner(verificador, pos, token, lin, tipo);
-			N(verificador, pos, token, lin, tipo, e, v);
-			if (v == 0)
-			{
-				H(verificador, pos, token, lin, tipo, e, rep, lect);
-			}
-		}
-		else
-		{
-			H(verificador, pos, token, lin, tipo, e, rep, lect);
-		}
-	}
-	else if (strcmp(token, "/") == 0 && lect > 1)
-	{
-		Scanner(verificador, pos, token, lin, tipo);
-		int v = 1;
-		e = 0;
-		if (strcmp(token, "/") == 0)
-		{
-			Scanner(verificador, pos, token, lin, tipo);
-			N(verificador, pos, token, lin, tipo, e, v);
-			if (v == 0)
-			{
-				H(verificador, pos, token, lin, tipo, e, rep, lect);
-			}
-		}
-		else
-		{
-			H(verificador, pos, token, lin, tipo, e, rep, lect);
-		}
-	}
-	else if (strcmp(token, "") == 0 && lect > 1)
-	{
-		e = 0;
-	}
-	else
-	{
-		e = 1;
+	else{
+		e=1;
 	}
 }
 
-void H(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e, int rep, int lect){
-	if (tipo == 'I' || tipo == 'E' || tipo == 'D')
-	{
-		e = 0;
+void L(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e){
+	if(tipo=='D'){
 		Scanner(verificador, pos, token, lin, tipo);
-		int v = 1;
-		if (strcmp(token, "/") == 0)
-		{
+		J(verificador, pos, token, lin, tipo, e);
+	}
+	else if(tipo=='E'){
+		Scanner(verificador, pos, token, lin, tipo);
+		J(verificador, pos, token, lin, tipo, e);
+	}
+	else if(tipo=='I'){
+		Scanner(verificador, pos, token, lin, tipo);
+		J(verificador, pos, token, lin, tipo, e);
+	}
+	else if(strcmp(token,"/*")==0){
+		Scanner(verificador, pos, token, lin, tipo);
+		P(verificador, pos, token, lin, tipo, e);
+		L(verificador, pos, token, lin, tipo, e);
+	}
+	else if(strcmp(token,"(")== 0){
+		Scanner(verificador, pos, token, lin, tipo);
+		L(verificador, pos, token, lin, tipo, e);
+		Scanner(verificador, pos, token, lin, tipo);
+		if(strcmp(token,")")== 0){
 			Scanner(verificador, pos, token, lin, tipo);
-			N(verificador, pos, token, lin, tipo, e, v);
-			if (v == 0)
-			{
-				G(verificador, pos, token, lin, tipo, e, rep, lect);
-			}
-		}
-		else
-		{
-			G(verificador, pos, token, lin, tipo, e, rep, lect);
+			e=0;
+		}else{
+			e=1;
 		}
 	}
-	else
-	{
-		e = 1;
+	else{
+		e=1;
 	}
 }
 
-void R(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e, int escr){
-	if (tipo == 'I')
-	{
-		int rep = 1;
-		e = 0;
+
+void J(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e){
+	if(strcmp(token,"+")== 0){
 		Scanner(verificador, pos, token, lin, tipo);
-		T(verificador, pos, token, lin, tipo, e, rep, escr);
+		L(verificador, pos, token, lin, tipo, e);
 	}
-	else
-	{
-		e = 1;
+	else if(strcmp(token,"-")== 0){
+		Scanner(verificador, pos, token, lin, tipo);
+		L(verificador, pos, token, lin, tipo, e);
+	}
+	else if(strcmp(token,"*")== 0){
+		Scanner(verificador, pos, token, lin, tipo);
+		L(verificador, pos, token, lin, tipo, e);
+	}
+	else if(strcmp(token,"/")== 0){
+		Scanner(verificador, pos, token, lin, tipo);
+		L(verificador, pos, token, lin, tipo, e);
+	}
+	else if(strcmp(token,"/*")== 0){
+		Scanner(verificador, pos, token, lin, tipo);
+		P(verificador, pos, token, lin, tipo, e);
+		N(verificador, pos, token, lin, tipo, e);
+	}
+	else if(strcmp(token,"")== 0){
+		Scanner(verificador, pos, token, lin, tipo);
+		e=0;
+	}
+	else{
+		e=1;
 	}
 }
 
-void T(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e, int rep, int escr){
-	if (strcmp(token, "<") == 0)
-	{
-		e = 0;
-		rep++;
+void N(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e){
+	if(strcmp(token,"/*")== 0||strcmp(token,"+")== 0||strcmp(token,"-")== 0||strcmp(token,"*")== 0||strcmp(token,"/")== 0||strcmp(token,"")==0){
+		J(verificador, pos, token, lin, tipo, e);
+	}
+	else if(strcmp(token,"")==0){
 		Scanner(verificador, pos, token, lin, tipo);
-		if (rep <= 2)
-		{
-			T(verificador, pos, token, lin, tipo, e, rep, escr);
-		}
-		else
-		{
-			escr++;
-			int v = 1;
-			if (strcmp(token, "/") == 0)
-			{
-				Scanner(verificador, pos, token, lin, tipo);
-				N(verificador, pos, token, lin, tipo, e, v);
-				if (v == 0)
-				{
-					R(verificador, pos, token, lin, tipo, e, escr);
-				}
-			}
-			else
-			{
-				R(verificador, pos, token, lin, tipo, e, escr);
-			}
-		}
+		e=0;
 	}
-	else if (strcmp(token, "+") == 0 && escr > 1)
-	{
-		Scanner(verificador, pos, token, lin, tipo);
-		int v = 1;
-		e = 0;
-		if (strcmp(token, "/") == 0)
-		{
-			Scanner(verificador, pos, token, lin, tipo);
-			N(verificador, pos, token, lin, tipo, e, v);
-			if (v == 0)
-			{
-				U(verificador, pos, token, lin, tipo, e, rep, escr);
-			}
-		}
-		else
-		{
-			U(verificador, pos, token, lin, tipo, e, rep, escr);
-		}
-	}
-	else if (strcmp(token, "-") == 0 && escr > 1)
-	{
-		Scanner(verificador, pos, token, lin, tipo);
-		int v = 1;
-		e = 0;
-		if (strcmp(token, "/") == 0)
-		{
-			Scanner(verificador, pos, token, lin, tipo);
-			N(verificador, pos, token, lin, tipo, e, v);
-			if (v == 0)
-			{
-				U(verificador, pos, token, lin, tipo, e, rep, escr);
-			}
-		}
-		else
-		{
-			U(verificador, pos, token, lin, tipo, e, rep, escr);
-		}
-	}
-	else if (strcmp(token, "*") == 0 && escr > 1)
-	{
-		Scanner(verificador, pos, token, lin, tipo);
-		int v = 1;
-		e = 0;
-		if (strcmp(token, "/") == 0)
-		{
-			Scanner(verificador, pos, token, lin, tipo);
-			N(verificador, pos, token, lin, tipo, e, v);
-			if (v == 0)
-			{
-				U(verificador, pos, token, lin, tipo, e, rep, escr);
-			}
-		}
-		else
-		{
-			U(verificador, pos, token, lin, tipo, e, rep, escr);
-		}
-	}
-	else if (strcmp(token, "/") == 0 && escr > 1)
-	{
-		Scanner(verificador, pos, token, lin, tipo);
-		int v = 1;
-		e = 0;
-		if (strcmp(token, "/") == 0)
-		{
-			Scanner(verificador, pos, token, lin, tipo);
-			N(verificador, pos, token, lin, tipo, e, v);
-			if (v == 0)
-			{
-				U(verificador, pos, token, lin, tipo, e, rep, escr);
-			}
-		}
-		else
-		{
-			U(verificador, pos, token, lin, tipo, e, rep, escr);
-		}
-	}
-	else if (strcmp(token, "") == 0 && escr > 1)
-	{
-		e = 0;
-	}
-	else
-	{
-		e = 1;
+	else{
+		e=1;
 	}
 }
 
-void U(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e, int rep, int escr){
-	if (tipo == 'I' || tipo == 'E' || tipo == 'D')
-	{
-		e = 0;
+void F(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e){
+	if(tipo=='I'){
 		Scanner(verificador, pos, token, lin, tipo);
-		int v = 1;
-		if (strcmp(token, "/") == 0)
-		{
-			Scanner(verificador, pos, token, lin, tipo);
-			N(verificador, pos, token, lin, tipo, e, v);
-			if (v == 0)
-			{
-				T(verificador, pos, token, lin, tipo, e, rep, escr);
-			}
-		}
-		else
-		{
-			T(verificador, pos, token, lin, tipo, e, rep, escr);
-		}
+		K(verificador, pos, token, lin, tipo, e);
 	}
-	else
-	{
-		e = 1;
+	else{
+		e=1;
 	}
 }
 
+void G(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e){
+	if(strcmp(token,">>")==0){
+		Scanner(verificador, pos, token, lin, tipo);
+		I(verificador, pos, token, lin, tipo, e);
+	}
+}
+
+void I(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e){
+	if(strcmp(token,"/*")==0){
+		Scanner(verificador, pos, token, lin, tipo);
+		P(verificador, pos, token, lin, tipo, e);
+		F(verificador, pos, token, lin, tipo, e);
+	}
+	else if(tipo=='I'){
+		F(verificador, pos, token, lin, tipo, e);
+	}
+	else{
+		e=1;
+	}
+}
+
+void K(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e){
+	if(strcmp(token,"+")==0){
+		Scanner(verificador, pos, token, lin, tipo);
+		AC(verificador, pos, token, lin, tipo, e);
+	}
+	else if(strcmp(token,"-")==0){
+		Scanner(verificador, pos, token, lin, tipo);
+		AC(verificador, pos, token, lin, tipo, e);
+	}
+	else if(strcmp(token,"*")==0){
+		Scanner(verificador, pos, token, lin, tipo);
+		AC(verificador, pos, token, lin, tipo, e);
+	}
+	else if(strcmp(token,"/")==0){
+		Scanner(verificador, pos, token, lin, tipo);
+		AC(verificador, pos, token, lin, tipo, e);
+	}
+	else if(strcmp(token,">>")==0){
+		G(verificador, pos, token, lin, tipo, e);
+	}
+	else if(strcmp(token,"")==0){
+		Scanner(verificador, pos, token, lin, tipo);
+		e=0;
+	}
+	else {
+		e=1;
+	}
+}
+
+void AC(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e){
+	if(strcmp(token,"/*")==0){
+		Scanner(verificador, pos, token, lin, tipo);
+		P(verificador, pos, token, lin, tipo, e);
+		H(verificador, pos, token, lin, tipo, e);
+	}
+	else if(tipo == 'I'||tipo=='E'||tipo=='D'){
+		H(verificador, pos, token, lin, tipo, e);
+	}
+	else{
+		e=1;
+	}
+}
+
+void H(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e){
+	if(tipo == 'I'||tipo=='E'||tipo=='D'){
+		Scanner(verificador, pos, token, lin, tipo);
+		AB(verificador, pos, token, lin, tipo, e);
+	}
+	else{
+		e=1;
+	}
+}
+
+void AB(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e){
+	if(strcmp(token,"/*")==0){
+		Scanner(verificador, pos, token, lin, tipo);
+		P(verificador, pos, token, lin, tipo, e);
+		ABA(verificador, pos, token, lin, tipo, e);
+	}
+	else if(strcmp(token,">>")==0){
+		ABA(verificador, pos, token, lin, tipo, e);
+	}
+	else if(strcmp(token,"")==0){
+		Scanner(verificador, pos, token, lin, tipo);
+		e=0;
+	}
+	else{
+		e=1;
+	}
+}
+
+void ABA(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e){
+	if(strcmp(token,">>")==0){
+		G(verificador, pos, token, lin, tipo, e);
+	}
+	else if(strcmp(token,"")==0){
+		Scanner(verificador, pos, token, lin, tipo);
+		e=0;
+	}
+	else{
+		e=1;
+	}
+}
+
+void R(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e){
+	if(tipo=='I'){
+		Scanner(verificador, pos, token, lin, tipo);
+		Q(verificador, pos, token, lin, tipo, e);
+	}
+	else{
+		e=1;
+	}
+}
+
+void T(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e){
+	if(strcmp(token,"<<")==0){
+		Scanner(verificador, pos, token, lin, tipo);
+		AD(verificador, pos, token, lin, tipo, e);
+	}
+	else{
+		e=1;
+	}
+}
+
+void AD(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e){
+	if(strcmp(token,"/*")==0){
+		Scanner(verificador, pos, token, lin, tipo);
+		P(verificador, pos, token, lin, tipo, e);
+		R(verificador, pos, token, lin, tipo, e);
+	}
+	else if(tipo=='I'){
+		R(verificador, pos, token, lin, tipo, e);
+	}
+	else{
+		e=1;
+	}
+}
+
+void Q(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e){
+	if(strcmp(token,"+")==0){
+		Scanner(verificador, pos, token, lin, tipo);
+		AE(verificador, pos, token, lin, tipo, e);
+	}
+	else if(strcmp(token,"-")==0){
+		Scanner(verificador, pos, token, lin, tipo);
+		AE(verificador, pos, token, lin, tipo, e);
+	}
+	else if(strcmp(token,"*")==0){
+		Scanner(verificador, pos, token, lin, tipo);
+		AE(verificador, pos, token, lin, tipo, e);
+	}
+	else if(strcmp(token,"/")==0){
+		Scanner(verificador, pos, token, lin, tipo);
+		AE(verificador, pos, token, lin, tipo, e);
+	}
+	else if(strcmp(token,"<<")==0){
+		T(verificador, pos, token, lin, tipo, e);
+	}
+	else if(strcmp(token,"")==0){
+		Scanner(verificador, pos, token, lin, tipo);
+		e=0;
+	}
+	else{
+		e=1;
+	}
+}
+
+void AE(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e){
+	if(strcmp(token,"/*")==0){
+		Scanner(verificador, pos, token, lin, tipo);
+		P(verificador, pos, token, lin, tipo, e);
+		U(verificador, pos, token, lin, tipo, e);
+	}
+	else if(tipo=='I'||tipo=='E'||tipo=='D'){
+		U(verificador, pos, token, lin, tipo, e);
+	}
+	else{
+		e=1;
+	}
+}
+
+void U(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e){
+	if(tipo=='I'||tipo=='E'||tipo=='D'){
+		Scanner(verificador, pos, token, lin, tipo);
+		AF(verificador, pos, token, lin, tipo, e);
+	}
+	else{
+		e=1;
+	}
+}
+
+void AF(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e){
+	if(strcmp(token,"/*")==0){
+		Scanner(verificador, pos, token, lin, tipo);
+		P(verificador, pos, token, lin, tipo, e);
+		AFA(verificador, pos, token, lin, tipo, e);
+	}
+	else if(strcmp(token,"<<")==0){		
+		AFA(verificador, pos, token, lin, tipo, e);
+	}
+	else if(strcmp(token,"")==0){	
+		Scanner(verificador, pos, token, lin, tipo);	
+		e=0;
+	}
+	else{
+		e=1;
+	}
+}
+
+void AFA(int &verificador, int &pos, char token[], char lin[], char &tipo, int &e){
+	if(strcmp(token,"<<")==0){
+		T(verificador, pos, token, lin, tipo, e);
+	}
+	if(strcmp(token,"")==0){
+		Scanner(verificador, pos, token, lin, tipo);
+		e=0;
+	}
+	else{
+		e=1;
+	}
+}
