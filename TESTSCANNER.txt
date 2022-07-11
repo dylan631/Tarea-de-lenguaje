@@ -1,17 +1,17 @@
 //suma = a
-a
+/*a
 suma=a+b;
 38 sum
 real x, y=3
-suma=a+a/*=-b*/
-a=(b*(a-c*(d++e*(a+b)-2)))
+suma=a+a /*=-b*/
+a=(b*(a-c*(d+e*(a+b)-2)))
 a=(b*(a-c*(d/*H*/+e*(a+b)-2))
-a=(b*(a-c*(d+e*(a+b)-2/*H*/)))
 a=(b*(a-c*(d/*H*/+e*(a+b)-2)))
+a=(b*(a-c*(d+e*(a+b)-2/*H*/)))
 entero a, b=2*(3+6), c
 entero /*suma1=3*/b
 real x, y=3;
-entero a=3,m=a
+entero a=3,b=2*(3+6),c
 lee>>a+b
 escribe<<m<<n
 lee>>x>>y
